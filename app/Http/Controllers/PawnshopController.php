@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Excel;
 use App\Exports\PawnshopsExport;
+use Illuminate\Support\Facades\Storage;
 
 class PawnshopController extends Controller
 {
@@ -109,7 +110,7 @@ class PawnshopController extends Controller
         $image = $request->file('item_photo');
         $imgName = time().rand().'.'.$image->extension();
         $destinationPath = public_path('/assets/img-upload/');
-        $image->move($destinationPath, $imgName);
+        $putFile = Storage::put("images/$imgName", file_get_contents($image), 'public');
 
         Pawnshop::create([
             'name' => $request->name,
